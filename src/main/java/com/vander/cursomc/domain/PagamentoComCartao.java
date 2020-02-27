@@ -1,7 +1,10 @@
 package com.vander.cursomc.domain;
 
+import javax.persistence.Entity;
+
 import com.vander.cursomc.domain.enums.EstadoPagamento;
 
+@Entity
 public class PagamentoComCartao extends Pagamento{
 	private static final long serialVersionUID = 1L;
 	
@@ -11,8 +14,8 @@ public class PagamentoComCartao extends Pagamento{
 		
 	}
 
-	public PagamentoComCartao(Integer id, EstadoPagamento estadoPagamento, Integer numeroDeParcelas) {
-		super(id, estadoPagamento);
+	public PagamentoComCartao(Integer id, EstadoPagamento estadoPagamento, Pedido pedido, Integer numeroDeParcelas) {
+		super(id, estadoPagamento, pedido);
 		this.numeroDeParcelas = numeroDeParcelas;
 	}
 
