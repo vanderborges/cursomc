@@ -29,20 +29,15 @@ import com.example.cursomc.services.CategoriaService;
 public class CategoriaResource {
 
 	@Autowired
-	private CategoriaService service;
+	private CategoriaService service;	
 	
-	@GetMapping(value = "/{id}")
-	public ResponseEntity<Categoria> find(@PathVariable Integer id) {
-		Categoria obj = service.find(id);
+	@PostMapping
+	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDto objDto) {
+		Categoria obj = service.fromDTO(objDto);
+		obj = service.insert(obj);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		
-		return ResponseEntity.ok().body(obj);
-	}
-	
-	@GetMapping
-	public ResponseEntity<List<CategoriaDto>> findAll() {
-		List<Categoria> list = service.findAll();
-		List<CategoriaDto> listDto = list.stream().map(obj -> new CategoriaDto(obj)).collect(Collectors.toList());
-		return ResponseEntity.ok().body(listDto);
+		return ResponseEntity.created(uri).build();
 	}
 	
 	@GetMapping(value = "/page")
@@ -55,14 +50,6 @@ public class CategoriaResource {
 		Page<CategoriaDto> listDto = list.map(obj -> new CategoriaDto(obj));
 		
 		return ResponseEntity.ok().body(listDto);
-	}
-	@PostMapping
-	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDto objDto) {
-		Categoria obj = service.fromDTO(objDto);
-		obj = service.insert(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-		
-		return ResponseEntity.created(uri).build();
 	}
 	
 	@PutMapping(value = "/{id}")
@@ -80,5 +67,18 @@ public class CategoriaResource {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@GetMapping(value = "/{id}")
+	public ResponseEntity<Categoria> find(@PathVariable Integer id) {
+		Categoria obj = service.find(id);
+		
+		return ResponseEntity.ok().body(obj);
+	}
+	
+	@GetMapping
+	public ResponseEntity<List<CategoriaDto>> findAll() {
+		List<Categoria> list = service.findAll();
+		List<CategoriaDto> listDto = list.stream().map(obj -> new CategoriaDto(obj)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDto);
+	}
 	
 }
