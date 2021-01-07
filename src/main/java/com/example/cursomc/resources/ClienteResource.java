@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.cursomc.domain.Cliente;
-import com.example.cursomc.dto.ClienteDto;
+import com.example.cursomc.dto.ClienteDTO;
 import com.example.cursomc.dto.ClienteNewDTO;
 import com.example.cursomc.services.ClienteService;
 
@@ -40,19 +40,19 @@ public class ClienteResource {
 	}
 	
 	@GetMapping(value = "/page")
-	public ResponseEntity<Page<ClienteDto>> findPage(
+	public ResponseEntity<Page<ClienteDTO>> findPage(
 			@RequestParam(value = "page", defaultValue = "0") Integer page,
 			@RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage,
 			@RequestParam(value = "orderBy", defaultValue = "nome") String orderBy,
 			@RequestParam(value = "direction", defaultValue = "ASC" ) String direction) {
 		Page<Cliente> list = service.findPage(page, linesPerPage, orderBy, direction);
-		Page<ClienteDto> listDto = list.map(obj -> new ClienteDto(obj));
+		Page<ClienteDTO> listDto = list.map(obj -> new ClienteDTO(obj));
 		
 		return ResponseEntity.ok().body(listDto);
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Void> update(@RequestBody ClienteDto objDto, @PathVariable Integer id) {
+	public ResponseEntity<Void> update(@RequestBody ClienteDTO objDto, @PathVariable Integer id) {
 		Cliente obj = service.fromDTO(objDto);
 		obj.setId(id);
 		obj = service.update(obj);
@@ -67,9 +67,9 @@ public class ClienteResource {
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<ClienteDto>> findAll() {
+	public ResponseEntity<List<ClienteDTO>> findAll() {
 		List<Cliente> list = service.findAll();
-		List<ClienteDto> listDto = list.stream().map(obj -> new ClienteDto(obj)).collect(Collectors.toList());
+		List<ClienteDTO> listDto = list.stream().map(obj -> new ClienteDTO(obj)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
 	}
 	

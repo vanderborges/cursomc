@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.cursomc.domain.Categoria;
-import com.example.cursomc.dto.CategoriaDto;
+import com.example.cursomc.dto.CategoriaDTO;
 import com.example.cursomc.services.CategoriaService;
 
 @RestController
@@ -32,7 +32,7 @@ public class CategoriaResource {
 	private CategoriaService service;	
 	
 	@PostMapping
-	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDto objDto) {
+	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO objDto) {
 		Categoria obj = service.fromDTO(objDto);
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
@@ -41,19 +41,19 @@ public class CategoriaResource {
 	}
 	
 	@GetMapping(value = "/page")
-	public ResponseEntity<Page<CategoriaDto>> findPage(
+	public ResponseEntity<Page<CategoriaDTO>> findPage(
 			@RequestParam(value = "page", defaultValue = "0") Integer page,
 			@RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage,
 			@RequestParam(value = "orderBy", defaultValue = "nome") String orderBy,
 			@RequestParam(value = "direction", defaultValue = "ASC" ) String direction) {
 		Page<Categoria> list = service.findPage(page, linesPerPage, orderBy, direction);
-		Page<CategoriaDto> listDto = list.map(obj -> new CategoriaDto(obj));
+		Page<CategoriaDTO> listDto = list.map(obj -> new CategoriaDTO(obj));
 		
 		return ResponseEntity.ok().body(listDto);
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Void> update(@RequestBody CategoriaDto objDto, @PathVariable Integer id) {
+	public ResponseEntity<Void> update(@RequestBody CategoriaDTO objDto, @PathVariable Integer id) {
 		Categoria obj = service.fromDTO(objDto);
 		obj.setId(id);
 		obj = service.update(obj);
@@ -75,9 +75,9 @@ public class CategoriaResource {
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<CategoriaDto>> findAll() {
+	public ResponseEntity<List<CategoriaDTO>> findAll() {
 		List<Categoria> list = service.findAll();
-		List<CategoriaDto> listDto = list.stream().map(obj -> new CategoriaDto(obj)).collect(Collectors.toList());
+		List<CategoriaDTO> listDto = list.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
 	}
 	

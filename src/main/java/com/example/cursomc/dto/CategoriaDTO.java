@@ -6,7 +6,7 @@ import org.hibernate.validator.constraints.Length;
 
 import com.example.cursomc.domain.Categoria;
 
-public class CategoriaDto implements Serializable{
+public class CategoriaDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	private Integer id;
@@ -15,10 +15,10 @@ public class CategoriaDto implements Serializable{
 	@Length(min = 5, max = 80, message = "O tamanho dever ser entre 5 a 80 caractéres")
 	private String nome;
 	
-	public CategoriaDto() {
+	public CategoriaDTO() {
 	}
 	
-	public CategoriaDto(Categoria obj) {
+	public CategoriaDTO(Categoria obj) {
 		id = obj.getId();
 		nome = obj.getNome();
 	}
